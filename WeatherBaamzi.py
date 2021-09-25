@@ -5,22 +5,31 @@ import time
 
 def getWeather(canvas):
     city = textfield.get()
-    api = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=b5415e4d665598ba500e11e9e22217c6"
-    json_data = requests.get(api).json()
-    condition = json_data['weather'][0]['main']
-    temp = int(json_data['main']['temp'] - 273.15)
-    min_temp = int(json_data['main']['temp_min'] - 273.15)
-    max_temp = int(json_data['main']['temp_max'] - 273.15)
-    pressure = json_data['main']['pressure']
-    humidity = json_data['main']['humidity']
-    wind = json_data['wind']['speed']
-    sunrise = time.strftime("%I:%M:%S", time.gmtime(json_data['sys']['sunrise'] - 21600))
-    sunset = time.strftime("%I:%M:%S", time.gmtime(json_data['sys']['sunset'] - 21600))
+    try:
 
-    final_info = condition + '\n' + str(temp) + 'C'
-    final_data = '\n' + "Max Temp: " + str(max_temp) + "\n" + "Min Temp: " + str(min_temp) + '\n' + "Pressure: " + str(pressure) + '\n' + "Humidity: " + str(humidity) + '\n'  + "Wind Speed : " + str(wind) + '\n'+ "Sunrise: " + sunrise + '\n' + "Sunset" + sunset
-    label1.config(text = final_info)
-    label2.config(text = final_data)
+        api = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=b5415e4d665598ba500e11e9e22217c6"
+        json_data = requests.get(api).json()
+        condition = json_data['weather'][0]['main']
+        temp = int(json_data['main']['temp'] - 273.15)
+        min_temp = int(json_data['main']['temp_min'] - 273.15)
+        max_temp = int(json_data['main']['temp_max'] - 273.15)
+        pressure = json_data['main']['pressure']
+        humidity = json_data['main']['humidity']
+        wind = json_data['wind']['speed']
+        sunrise = time.strftime("%I:%M:%S", time.gmtime(json_data['sys']['sunrise'] - 21600))
+        sunset = time.strftime("%I:%M:%S", time.gmtime(json_data['sys']['sunset'] - 21600))
+
+        final_info = condition + '\n' + str(temp) + 'C'
+        final_data = '\n' + "Max Temp: " + str(max_temp) + "\n" + "Min Temp: " + str(min_temp) + '\n' + "Pressure: " + str(pressure) + '\n' + "Humidity: " + str(humidity) + '\n'  + "Wind Speed : " + str(wind) + '\n'+ "Sunrise: " + sunrise + '\n' + "Sunset" + sunset
+        label1.config(text = final_info)
+        label2.config(text = final_data)
+    
+    except KeyError:
+        error = "Enter a Valid Place Name"
+        error_description = "The Place you have entered does not exists!"
+        label1.config(text = error)
+        label2.config(text = error_description)
+
 
 canvas = tk.Tk()
 canvas.geometry("600x500")
